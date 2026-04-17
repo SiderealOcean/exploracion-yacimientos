@@ -39,7 +39,6 @@ html, body {
   font-size: clamp(1.25rem, 2vw, 1.75rem);
   color: var(--text-primary);
   line-height: 1.6;
-  min-font-size: 18px;
 }
 
 .act-title {

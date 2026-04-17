@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:;">
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:;">
   <title>El Jardinero y la Flor Perfecta</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
@@ -45,13 +45,8 @@
     </main>
   </div>
 
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
-          onerror="document.write('<script src=\'vendor/gsap.min.js\'><\/script>')"></script>
-  <!-- p5.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"
-          onerror="document.write('<script src=\'vendor/p5.min.js\'><\/script>')"></script>
-
+  <script src="vendor/gsap.min.js"></script>
+  <script src="vendor/p5.min.js"></script>
   <script type="module" src="js/main.js"></script>
 </body>
 </html>
