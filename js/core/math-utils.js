@@ -10,6 +10,7 @@ export function lerp(a, b, t) {
 }
 
 export function mapRange(v, inMin, inMax, outMin, outMax) {
+  if (inMin === inMax) return outMin;
   return outMin + ((v - inMin) / (inMax - inMin)) * (outMax - outMin);
 }
 
