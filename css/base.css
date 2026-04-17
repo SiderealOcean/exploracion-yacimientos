@@ -1,0 +1,55 @@
+/* css/base.css */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;1,400&family=Inter:wght@400;500&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-void:        #07100a;
+  --bg-primary:     #0d1912;
+  --bg-secondary:   #132318;
+  --bg-panel:       #1a2e20;
+  --heatmap-low:    #0a1f15;
+  --heatmap-mid:    #2d4d3a;
+  --heatmap-high:   #7ba68a;
+  --point-default:  #9bb0a2;
+  --point-best:     #ffd166;
+  --point-selected: #ffa0c4;
+  --ellipse-cmaes:  #06d6a0;
+  --arrow-de:       #ef476f;
+  --text-primary:   #e8f0ea;
+  --text-secondary: #9bb0a2;
+  --text-muted:     #5a7061;
+  --text-accent:    #ffd166;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+.narrator-text {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-font-size: 18px;
+}
+
+.act-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  color: var(--text-accent);
+}
+
+.mono-num {
+  font-variant-numeric: tabular-nums;
+  font-family: 'Inter', system-ui, sans-serif;
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:;">
+  <title>El Jardinero y la Flor Perfecta</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <div id="app">
+    <!-- IZQUIERDA -->
+    <aside id="left-panel">
+      <div id="subtitle-area">
+        <p id="subtitle-text" class="narrator-text"></p>
+      </div>
+      <div id="tech-panel">
+        <h3 id="tp-algo">—</h3>
+        <div id="tp-stats"></div>
+        <div id="tp-note" class="note-text"></div>
+        <div id="tp-comparison" class="comparison-table"></div>
+      </div>
+      <div id="sliders-area"></div>
+    </aside>
+
+    <!-- DERECHA -->
+    <main id="right-panel">
+      <div id="canvas-container"></div>
+      <div id="controls-bar">
+        <button class="ctrl-btn" id="btn-prev">◀ Anterior</button>
+        <button class="ctrl-btn primary" id="btn-play">▶ Play</button>
+        <button class="ctrl-btn" id="btn-step">⏯ Step</button>
+        <button class="ctrl-btn" id="btn-reset">↺ Reset</button>
+        <button class="ctrl-btn" id="btn-next">Siguiente ▶</button>
+        <select class="ctrl-select" id="sel-speed">
+          <option value="0.5">0.5×</option>
+          <option value="1" selected>1×</option>
+          <option value="2">2×</option>
+          <option value="4">4×</option>
+        </select>
+      </div>
+    </main>
+  </div>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+          onerror="document.write('<script src=\'vendor/gsap.min.js\'><\/script>')"></script>
+  <!-- p5.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"
+          onerror="document.write('<script src=\'vendor/p5.min.js\'><\/script>')"></script>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
