@@ -58,10 +58,17 @@ export class HeatmapRenderer {
 
   setAlpha(a) {
     this._alpha = a;
-    this._img = null;
   }
 
   draw(p5) {
-    if (this._img) p5.image(this._img, 0, 0, p5.width, p5.height);
+    if (!this._img) return;
+    if (this._alpha < 255) {
+      p5.push();
+      p5.tint(255, this._alpha);
+      p5.image(this._img, 0, 0, p5.width, p5.height);
+      p5.pop();
+    } else {
+      p5.image(this._img, 0, 0, p5.width, p5.height);
+    }
   }
 }

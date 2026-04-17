@@ -38,6 +38,8 @@ export class EvolutionaryAlgorithm {
   }
 
   get bestFitness() {
-    return this.population ? this.population.best().fitness : Infinity;
+    if (!this.population) return Infinity;
+    const b = this.population.best();
+    return b ? b.fitness : Infinity;
   }
 }

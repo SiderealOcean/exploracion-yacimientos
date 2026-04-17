@@ -56,7 +56,7 @@ export class ActThreeScene extends Scene {
       { type: 'range', id: 'CR', label: 'CR (crossover)', min: 0.1, max: 1.0, step: 0.05, value: 0.9, decimals: 2,
         onChange: v => { this._algo.CR = v; } },
       { type: 'range', id: 'NP', label: 'NP (población)', min: 10, max: 40, step: 1, value: 30, decimals: 0,
-        onChange: v => { this._algo.NP = Math.round(v); } },
+        onChange: v => { this._algo.NP = Math.round(v); this._algo.reset(this._seed); this._updatePanel(state); } },
       { type: 'seed', id: 'seed', value: this._seed,
         onChange: v => { this._seed = v; this._algo.reset(v); this._updatePanel(state); } },
     ]);
