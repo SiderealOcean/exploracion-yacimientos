@@ -48,12 +48,14 @@ navbar.onPrev = () => {
 controls.onSpeed = v => { state.speed = v; };
 
 let lastTime = 0;
+let hoveredIndividual = null;
 
 new p5(function(p) {
   p.setup = function() {
     const container = document.getElementById('canvas-container');
     p.createCanvas(container.offsetWidth, container.offsetHeight).parent('canvas-container');
     p.frameRate(30);
+    lastTime = p.millis();
     heatmap.precompute(p, p.width, p.height);
     sceneManager.goto(0);
     navbar.update(0, sceneManager.total);
@@ -91,6 +93,11 @@ new p5(function(p) {
 
       points.draw(p, pop, { deHighlight });
 
+      if (scene?.name === 'act1' && hoveredIndividual) {
+        const algo = scene?.getAlgo?.();
+        if (algo) points.drawMutationCircle(p, hoveredIndividual, algo.sigma);
+      }
+
       if (scene?.name === 'act2') {
         overlay.drawEllipse(p, algo);
       }
@@ -112,18 +119,17 @@ new p5(function(p) {
 
   p.mouseMoved = function() {
     const scene = sceneManager.current;
-    if (scene?.name !== 'act1') return;
+    if (scene?.name !== 'act1') { hoveredIndividual = null; return; }
     const algo = scene?.getAlgo?.();
-    if (!algo?.population) return;
+    if (!algo?.population) { hoveredIndividual = null; return; }
     const pop = algo.population.individuals;
-    let closest = -1, minD = 400;
+    let closest = null, minD = 400;
     for (let i = 0; i < pop.length; i++) {
-      const { cx, cy } = { cx: p.width * (pop[i].x + 5.12) / 10.24, cy: p.height * (1 - (pop[i].y + 5.12) / 10.24) };
+      const cx = p.width * (pop[i].x + 5.12) / 10.24;
+      const cy = p.height * (1 - (pop[i].y + 5.12) / 10.24);
       const d = Math.sqrt((p.mouseX - cx) ** 2 + (p.mouseY - cy) ** 2);
-      if (d < minD) { minD = d; closest = i; }
+      if (d < minD) { minD = d; closest = pop[i]; }
     }
-    if (closest >= 0) {
-      points.drawMutationCircle(p, pop[closest], algo.sigma);
-    }
+    hoveredIndividual = closest;
   };
 });
