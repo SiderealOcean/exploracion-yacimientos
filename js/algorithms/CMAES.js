@@ -10,7 +10,7 @@ export class CMAES extends EvolutionaryAlgorithm {
     this.lambda = params.lambda ?? 30;
     this.mu     = Math.floor(this.lambda / 2);
     this.sigma  = params.sigma  ?? 0.5;
-    this.showEllipse = true;
+    this.showEllipse = params.showEllipse ?? true;
     this.reset(this.seed);
   }
 
