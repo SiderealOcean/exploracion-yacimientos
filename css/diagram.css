@@ -1,0 +1,109 @@
+/* css/diagram.css */
+#diagram-area {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.param-card {
+  position: relative;
+  background: var(--bg-panel);
+  border-radius: 4px;
+  padding: var(--sp-4) var(--sp-4) var(--sp-3) var(--sp-4);
+  border-left: 3px solid var(--algo-color, var(--text-accent));
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.param-card.algo-es    { --algo-color: #f5a623; }
+.param-card.algo-cmaes { --algo-color: #3dd6a0; }
+.param-card.algo-de    { --algo-color: #e83060; }
+
+.param-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.param-card-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--text-primary);
+  line-height: 1.1;
+  letter-spacing: 0.005em;
+}
+
+.param-card-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--algo-color);
+  white-space: nowrap;
+}
+
+.param-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.param-item {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: var(--sp-3);
+  align-items: start;
+}
+
+.param-glyph {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--algo-color);
+  line-height: 1;
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+
+.param-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.param-name {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+}
+
+.param-def {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.param-example {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--algo-color);
+  margin-top: 2px;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+
+@media (max-width: 900px) {
+  .param-card-title { font-size: 15px; }
+  .param-glyph { font-size: 24px; }
+  .param-item { grid-template-columns: 30px 1fr; }
+}

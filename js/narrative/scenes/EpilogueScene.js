@@ -32,27 +32,27 @@ export class EpilogueScene extends Scene {
   enter(state) {
     this._points = this._buildConvergingPoints(state.seed ?? 42);
     this._pulse = 0;
-    this.controls.setPlaying(false);
-    this.controls.onPlay = null; this.controls.onPause = null;
-    this.controls.onStep = null; this.controls.onReset = null;
+    this.controls.onReset = null;
 
-    this.sidePanel.setTitle('Tres caminos, una misma flor');
+    this.sidePanel.setHeader('Epílogo', 'Tres estrategias, un yacimiento');
+    this.sidePanel.setTitle('Tres estrategias, un yacimiento');
     const rows = [];
-    if (state.esResult)    rows.push(['Jardinero ingenuo (ES)', `${state.esResult.gen} gen · ${state.esResult.best.toFixed(3)}`]);
-    if (state.cmaesResult) rows.push(['Jardinero que observa (CMA-ES)', `${state.cmaesResult.gen} gen · ${state.cmaesResult.best.toFixed(6)}`]);
-    if (state.deResult)    rows.push(['Jardinero de las hermanas (DE)', `${state.deResult.gen} gen · ${state.deResult.best.toFixed(4)}`]);
+    if (state.esResult)    rows.push(['ES', `${state.esResult.gen} camp. · ${state.esResult.best.toFixed(3)}`]);
+    if (state.cmaesResult) rows.push(['CMA-ES', `${state.cmaesResult.gen} camp. · ${state.cmaesResult.best.toFixed(6)}`]);
+    if (state.deResult)    rows.push(['DE', `${state.deResult.gen} camp. · ${state.deResult.best.toFixed(4)}`]);
     this.sidePanel.setStats([]);
     this.sidePanel.setNote('');
     this.sidePanel.setComparison(rows);
 
     this.sidePanel.clearSliders();
-    this.sidePanel.addButton('↺ Volver al prólogo', () => this.sceneManager.goto(0));
-    this.sidePanel.addButton('🌱 Sembrar de nuevo', () => {
+    this.sidePanel.addButton('↺ Volver al inicio', () => this.sceneManager.goto(0));
+    this.sidePanel.addButton('🗺 Nuevo campo', () => {
       state.seed = Math.floor(Math.random() * 9999) + 1;
       this._points = this._buildConvergingPoints(state.seed);
     });
 
-    this.subtitle.showSequence(SUBTITLES.epilogue, 4000);
+    this._setupSlides([{ lines: SUBTITLES.epilogue }]);
+    this._gotoSlide(0);
   }
 
   update(dt, state) {
@@ -71,7 +71,5 @@ export class EpilogueScene extends Scene {
 
   getPulse() { return this._pulse; }
 
-  exit(state) {
-    this.subtitle.clear();
-  }
+  exit(state) {}
 }

@@ -1,4 +1,8 @@
 // js/main.js
+window.onerror = (msg, src, line, col) => {
+  const el = document.getElementById('error-overlay');
+  if (el) { el.style.display = 'block'; el.textContent = `JS Error: ${msg}  (${src?.split('/').pop()}:${line}:${col})`; }
+};
 import { HeatmapRenderer }  from './render/HeatmapRenderer.js';
 import { PointsRenderer }   from './render/PointsRenderer.js';
 import { OverlayRenderer }  from './render/OverlayRenderer.js';
@@ -7,6 +11,7 @@ import { SubtitleOverlay }  from './ui/SubtitleOverlay.js';
 import { SidePanel }        from './ui/SidePanel.js';
 import { Controls }         from './ui/Controls.js';
 import { NavBar }           from './ui/NavBar.js';
+import { Legend }           from './ui/Legend.js';
 import { PrologueScene }    from './narrative/scenes/PrologueScene.js';
 import { ActOneScene }      from './narrative/scenes/ActOneScene.js';
 import { ActTwoScene }      from './narrative/scenes/ActTwoScene.js';
@@ -20,9 +25,10 @@ const navbar     = new NavBar();
 const heatmap    = new HeatmapRenderer();
 const points     = new PointsRenderer();
 const overlay    = new OverlayRenderer();
+const legend     = new Legend();
 const bestResults = {};
 
-const sharedDeps = { subtitle, sidePanel, controls, overlay, heatmap, bestResults };
+const sharedDeps = { subtitle, sidePanel, controls, navbar, overlay, heatmap, legend, bestResults };
 
 const sceneManager = new SceneManager();
 const epilogue = new EpilogueScene({ ...sharedDeps, sceneManager });
@@ -38,14 +44,21 @@ sceneManager.scenes = [
 
 const state = { seed: 42, speed: 1 };
 sceneManager.setState(state);
+controls.setSpeed(state.speed);
+controls.onSpeedChange = v => { state.speed = v; };
 
 navbar.onNext = () => {
-  if (sceneManager.next()) navbar.update(sceneManager.currentIndex, sceneManager.total);
+  const scene = sceneManager.current;
+  if (!scene?.nextSlide()) {
+    if (sceneManager.next()) navbar.update(sceneManager.currentIndex, sceneManager.total);
+  }
 };
 navbar.onPrev = () => {
-  if (sceneManager.prev()) navbar.update(sceneManager.currentIndex, sceneManager.total);
+  const scene = sceneManager.current;
+  if (!scene?.prevSlide()) {
+    if (sceneManager.prev()) navbar.update(sceneManager.currentIndex, sceneManager.total);
+  }
 };
-controls.onSpeed = v => { state.speed = v; };
 
 let lastTime = 0;
 let hoveredIndividual = null;
@@ -74,7 +87,7 @@ new p5(function(p) {
 
     sceneManager.update(dt);
 
-    p.background(7, 16, 10);
+    p.background(10, 9, 6);
     heatmap.draw(p);
 
     const scene = sceneManager.current;
@@ -93,12 +106,16 @@ new p5(function(p) {
 
       points.draw(p, pop, { deHighlight });
 
-      if (scene?.name === 'act1' && hoveredIndividual) {
-        const algo = scene?.getAlgo?.();
-        if (algo) points.drawMutationCircle(p, hoveredIndividual, algo.sigma);
+      if (scene?.name === 'act1' && pop) {
+        const best = pop.best();
+        if (best && algo) points.drawMutationCircle(p, best, algo.sigma);
+        if (hoveredIndividual && hoveredIndividual !== best && algo) {
+          points.drawMutationCircle(p, hoveredIndividual, algo.sigma);
+        }
       }
 
       if (scene?.name === 'act2') {
+        if (algo?.mu && pop) overlay.drawSelectedHalos(p, pop, algo.mu);
         overlay.drawEllipse(p, algo);
       }
       if (scene?.name === 'act3' && deHighlight) {
@@ -117,8 +134,19 @@ new p5(function(p) {
     }
   };
 
+  p.mousePressed = function() {
+    const scene = sceneManager.current;
+    if (scene?.handleCanvasClick) scene.handleCanvasClick(p.mouseX, p.mouseY, p);
+  };
+
   p.mouseMoved = function() {
     const scene = sceneManager.current;
+    if (scene?.name === 'prologue' && scene._slideIdx === 1) {
+      const canvas = document.querySelector('#canvas-container canvas');
+      const dx = p.mouseX - (p.width - 36);
+      const dy = p.mouseY - 36;
+      if (canvas) canvas.style.cursor = (Math.hypot(dx, dy) <= 20) ? 'pointer' : 'default';
+    }
     if (scene?.name !== 'act1') { hoveredIndividual = null; return; }
     const algo = scene?.getAlgo?.();
     if (!algo?.population) { hoveredIndividual = null; return; }

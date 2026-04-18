@@ -5,21 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:;">
-  <title>El Jardinero y la Flor Perfecta</title>
+  <title>Exploración de Yacimientos Petroleros</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Syne:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/diagram.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/legend.css">
 </head>
 <body>
+  <div id="error-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;padding:.75rem 1rem;background:#b00;color:#fff;font:13px/1.4 monospace;z-index:9999;white-space:pre-wrap;"></div>
   <div id="app">
     <!-- IZQUIERDA -->
     <aside id="left-panel">
-      <div id="subtitle-area">
-        <p id="subtitle-text" class="narrator-text"></p>
+      <div id="scene-header">
+        <span id="scene-act"></span>
+        <div id="scene-name-wrap">
+          <div id="scene-name"></div>
+          <button id="btn-info" type="button" aria-label="Más información" hidden>i</button>
+        </div>
+        <div id="slide-dots" aria-label="Progreso de escena"></div>
       </div>
+      <div id="subtitle-area">
+        <div id="subtitle-text"></div>
+      </div>
+      <div id="diagram-area" style="display:none;"></div>
       <div id="tech-panel">
         <h3 id="tp-algo">—</h3>
         <div id="tp-stats"></div>
+        <div id="tp-progress" class="progress-bar" aria-hidden="true"><span></span></div>
         <div id="tp-note" class="note-text"></div>
         <div id="tp-comparison" class="comparison-table"></div>
       </div>
@@ -28,21 +45,32 @@
 
     <!-- DERECHA -->
     <main id="right-panel">
-      <div id="canvas-container"></div>
+      <div id="canvas-container">
+        <div id="canvas-legend" aria-live="polite" hidden></div>
+      </div>
       <div id="controls-bar">
         <button class="ctrl-btn" id="btn-prev">◀ Anterior</button>
-        <button class="ctrl-btn primary" id="btn-play">▶ Play</button>
-        <button class="ctrl-btn" id="btn-step">⏯ Step</button>
+        <button class="ctrl-btn primary" id="btn-play" disabled>▶ Play</button>
         <button class="ctrl-btn" id="btn-reset">↺ Reset</button>
-        <button class="ctrl-btn" id="btn-next">Siguiente ▶</button>
-        <select class="ctrl-select" id="sel-speed">
-          <option value="0.5">0.5×</option>
-          <option value="1" selected>1×</option>
-          <option value="2">2×</option>
-          <option value="4">4×</option>
+        <label class="speed-label" for="sel-speed">Velocidad</label>
+        <select class="ctrl-select" id="sel-speed" aria-label="Velocidad de animación">
+          <option value="0.1">0.1x</option>
+          <option value="0.5">0.5x</option>
+          <option value="1" selected>1x</option>
+          <option value="2">2x</option>
+          <option value="4">4x</option>
         </select>
+        <button class="ctrl-btn" id="btn-next">Siguiente ▶</button>
       </div>
     </main>
+  </div>
+
+  <div id="modal-overlay" class="hidden" aria-hidden="true">
+    <div id="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button id="modal-close" type="button" aria-label="Cerrar">×</button>
+      <h2 id="modal-title"></h2>
+      <div id="modal-body"></div>
+    </div>
   </div>
 
   <script src="vendor/gsap.min.js"></script>

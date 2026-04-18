@@ -1,9 +1,9 @@
 // js/render/HeatmapRenderer.js
 import { rastrigin } from '../core/rastrigin.js';
 
-const LOW  = [10,  31,  21];
-const MID  = [45,  77,  58];
-const HIGH = [123, 166, 138];
+const LOW  = [8,   6,   4];    // negro petróleo (roca sin hidrocarburo)
+const MID  = [90,  40,  8];    // marrón geológico (formación de transición)
+const HIGH = [232, 133, 10];   // ámbar brillante (zona con hidrocarburo)
 
 function lerpColor(a, b, t) {
   return [

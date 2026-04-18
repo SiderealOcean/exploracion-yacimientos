@@ -19,9 +19,16 @@ export class CMAES extends EvolutionaryAlgorithm {
     this.C  = [[1, 0], [0, 1]];
     this.pc = [0, 0];
     this.ps = [0, 0];
+    this._recomputeConstants();
+
+    const inds = [];
+    for (let i = 0; i < this.lambda; i++) inds.push(this._randomIndividual());
+    this.population = new Population(inds);
+  }
+
+  _recomputeConstants() {
     this._weights = this._buildWeights();
     this._mueff   = this._computeMueff();
-
     const n = 2;
     this._cs   = (this._mueff + 2) / (n + this._mueff + 5);
     this._cc   = (4 + this._mueff / n) / (n + 4 + 2 * this._mueff / n);
@@ -30,10 +37,12 @@ export class CMAES extends EvolutionaryAlgorithm {
                    2 * (this._mueff - 2 + 1 / this._mueff) / ((n + 2) ** 2 + this._mueff));
     this._damps = 1 + 2 * Math.max(0, Math.sqrt((this._mueff - 1) / (n + 1)) - 1) + this._cs;
     this._chiN  = Math.sqrt(n) * (1 - 1 / (4 * n) + 1 / (21 * n * n));
+  }
 
-    const inds = [];
-    for (let i = 0; i < this.lambda; i++) inds.push(this._randomIndividual());
-    this.population = new Population(inds);
+  setLambda(lambda) {
+    this.lambda = lambda;
+    this.mu = Math.floor(lambda / 2);
+    this._recomputeConstants();
   }
 
   _buildWeights() {

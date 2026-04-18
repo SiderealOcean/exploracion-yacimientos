@@ -1,13 +1,82 @@
 // js/ui/SidePanel.js
 export class SidePanel {
   constructor() {
+    this._actEl    = document.getElementById('scene-act');
+    this._nameEl   = document.getElementById('scene-name');
     this._algoEl   = document.getElementById('tp-algo');
     this._statsEl  = document.getElementById('tp-stats');
     this._noteEl   = document.getElementById('tp-note');
     this._compEl   = document.getElementById('tp-comparison');
     this._slidersEl = document.getElementById('sliders-area');
+    this._diagramEl = document.getElementById('diagram-area');
+    this._dotsEl    = document.getElementById('slide-dots');
+    this._progressEl = document.getElementById('tp-progress');
+    this._infoBtn    = document.getElementById('btn-info');
+    this._modalEl    = document.getElementById('modal-overlay');
+    this._modalTitle = document.getElementById('modal-title');
+    this._modalBody  = document.getElementById('modal-body');
+    this._modalClose = document.getElementById('modal-close');
+    this._currentInfo = null;
     this._sliderDefs = [];
     this._sliderEls  = [];
+    this._wireModal();
+  }
+
+  _wireModal() {
+    if (!this._infoBtn) return;
+    this._infoBtn.addEventListener('click', () => this._openModal());
+    this._modalClose?.addEventListener('click', () => this._closeModal());
+    this._modalEl?.addEventListener('click', e => {
+      if (e.target === this._modalEl) this._closeModal();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && this._modalEl && !this._modalEl.classList.contains('hidden')) {
+        this._closeModal();
+      }
+    });
+  }
+
+  _openModal() {
+    if (!this._currentInfo) return;
+    this._modalTitle.textContent = this._currentInfo.title;
+    this._modalBody.innerHTML    = this._currentInfo.body;
+    this._modalEl.classList.remove('hidden');
+    this._modalEl.setAttribute('aria-hidden', 'false');
+  }
+
+  _closeModal() {
+    if (!this._modalEl) return;
+    this._modalEl.classList.add('hidden');
+    this._modalEl.setAttribute('aria-hidden', 'true');
+  }
+
+  setInfo(info) {
+    this._currentInfo = info || null;
+    if (!this._infoBtn) return;
+    this._infoBtn.hidden = !info;
+  }
+
+  clearInfo() {
+    this.setInfo(null);
+    this._closeModal();
+  }
+
+  setHeader(act, name) {
+    this._actEl.textContent  = act;
+    this._nameEl.textContent = name;
+    if (this._dotsEl) this._dotsEl.innerHTML = '';
+    if (this._progressEl) this._progressEl.classList.remove('active');
+    this.clearInfo();
+  }
+
+  setSlideDots(current, total) {
+    if (!this._dotsEl) return;
+    if (!total || total <= 1) { this._dotsEl.innerHTML = ''; return; }
+    let html = '';
+    for (let i = 0; i < total; i++) {
+      html += `<span class="dot${i === current ? ' active' : ''}" role="radio" aria-checked="${i === current}" aria-label="Slide ${i + 1} de ${total}"></span>`;
+    }
+    this._dotsEl.innerHTML = html;
   }
 
   setTitle(text) {
@@ -24,11 +93,38 @@ export class SidePanel {
     this._noteEl.textContent = text;
   }
 
+  setProgress(value) {
+    if (!this._progressEl) return;
+    if (value == null || value < 0) {
+      this._progressEl.classList.remove('active');
+      return;
+    }
+    const v = Math.max(0, Math.min(1, value));
+    this._progressEl.classList.add('active');
+    const fill = this._progressEl.firstElementChild;
+    if (fill) fill.style.width = (v * 100).toFixed(1) + '%';
+  }
+
   setComparison(rows) {
     if (!rows || rows.length === 0) { this._compEl.innerHTML = ''; return; }
     this._compEl.innerHTML = rows.map(([algo, val]) =>
       `<div class="row"><span class="algo-name">${algo}</span><span class="algo-val">${val}</span></div>`
     ).join('');
+  }
+
+  setDiagram(html) {
+    this._diagramEl.innerHTML = html;
+    this._diagramEl.style.display = 'block';
+    document.body.classList.add('has-diagram');
+    if (window.gsap) {
+      gsap.fromTo(this._diagramEl, { opacity: 0 }, { opacity: 1, duration: 0.6 });
+    }
+  }
+
+  clearDiagram() {
+    this._diagramEl.style.display = 'none';
+    this._diagramEl.innerHTML = '';
+    document.body.classList.remove('has-diagram');
   }
 
   setSliders(defs) {

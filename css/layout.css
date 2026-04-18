@@ -7,14 +7,29 @@
 
 #left-panel {
   width: 40%;
-  min-width: 320px;
+  min-width: 340px;
   display: flex;
   flex-direction: column;
-  background: var(--bg-primary);
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 30%, rgba(245, 166, 35, 0.025) 0%, transparent 70%),
+    var(--bg-primary);
   border-right: 1px solid var(--bg-panel);
-  padding: 2rem 1.5rem 1.5rem;
-  gap: 1.5rem;
+  padding: var(--sp-5) var(--sp-5);
+  gap: var(--sp-5);
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-muted) transparent;
+}
+
+#left-panel::-webkit-scrollbar { width: 6px; }
+#left-panel::-webkit-scrollbar-track { background: transparent; }
+#left-panel::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--text-muted), rgba(245, 166, 35, 0.4));
+  border-radius: 3px;
+  transition: background 200ms ease;
+}
+#left-panel::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--text-accent), #ffb84a);
 }
 
 #right-panel {
@@ -41,8 +56,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
   background: var(--bg-primary);
   border-top: 1px solid var(--bg-panel);
   flex-wrap: wrap;
@@ -50,7 +65,14 @@
 
 @media (max-width: 900px) {
   #app { flex-direction: column; }
-  #left-panel { width: 100%; min-width: unset; height: 45vh; overflow-y: auto; }
-  #right-panel { flex: 1; }
+  #left-panel {
+    width: 100%;
+    min-width: unset;
+    max-height: min(60vh, 520px);
+    padding: var(--sp-4);
+    gap: var(--sp-4);
+  }
+  #right-panel { flex: 1; min-height: 320px; }
   html, body { overflow: auto; }
+  .narrator-text { font-size: 1rem; }
 }
