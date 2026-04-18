@@ -1,4 +1,4 @@
-# El Jardinero y la Flor Perfecta
+# Exploración de Yacimientos Petroleros
 
 Experiencia web interactiva que ilustra tres algoritmos evolutivos (ES, CMA-ES, DE) sobre la función Rastrigin 2D, narrada en cinco actos.
 
