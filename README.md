@@ -1,4 +1,4 @@
-# Exploración de Yacimientos Petroleros
+# El Jardinero y la Flor Perfecta
 
 Experiencia web interactiva que ilustra tres algoritmos evolutivos (ES, CMA-ES, DE) sobre la función Rastrigin 2D, narrada en cinco actos.
 
@@ -64,7 +64,7 @@ El flag `-c-1` desactiva la caché (`Cache-Control: max-age=-1`).
 
 ## Estructura
 
-Ver [`CLAUDE.md`](./CLAUDE.md) para la arquitectura completa, paleta, reglas de implementación y checklist de QA.
+Ver `CLAUDE.md` (local) para la arquitectura completa, paleta, reglas de implementación y checklist de QA.
 
 ## Modo offline
 
